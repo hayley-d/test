@@ -1,0 +1,33 @@
+# Build artifacts
+bin/
+obj/
+build/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.lib
+CMakeCache.txt
+cmake-build-*/
+
+# Version control
+.git/
+.gitignore
+
+# IDE and editor files
+.vscode/
+.idea/
+.vs/
+
+# Documentation and non-build files
+docs/
+*.md
+*.doc
+*.txt
+
+# Test artifacts
+tests/
+*.gcno
+*.gcda
+*.gcov

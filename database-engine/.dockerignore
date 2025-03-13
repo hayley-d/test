@@ -1,0 +1,35 @@
+# Build artifacts
+bin/
+obj/
+build/
+*.o
+*.obj
+*.exe
+*.out
+
+# Version control
+.git/
+.gitignore
+
+# IDE 
+.vscode/
+.idea/
+.vs/
+
+# Documentation and non-build files
+docs/
+*.md
+
+# Test artifacts
+tests/
+*.gcno
+*.gcda
+*.gcov
+
+# Config backup files
+*.conf.bak
+*.json.bak
+
+# Temporary files
+tmp/
+.cache/

@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  engine:
+    build:
+      context: ./database-engine
+      dockerfile: Dockerfile
+    container_name: engine
+    restart: unless-stopped
+    ports:
+      - "9005:9005"
+    networks:
+      - app_network
+
+  cli:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    container_name: cli
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - engine
+    networks:
+      - app_network
+    stdin_open: true
+    tty: true
+
+  web-app:
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
+    container_name: web-app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - engine
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

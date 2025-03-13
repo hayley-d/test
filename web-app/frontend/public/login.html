@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./assets/login.css">
+    <title>MPDB - NoSQL Database</title>
+    <!--<link rel="icon" href="logo.jpg">
+        insert database logo here
+    -->
+</head>
+<body>
+    <div class="container">
+        <p id="name">MPDB - NoSQL Database</p>
+        <p>Log In</p>
+        <div class="in-container">
+            <div class="logo">
+                <!--<img src="logo.jpg" id="logo"> 
+                    We should insert database logo here
+                -->
+            </div>
+            <form id="log">
+                <label for="email">Email:</label><br><br>
+                <input type="email" id="email" name="email" class="box" autocomplete="off"><br><br>
+                <label for="password">Password:</label><br><br>
+                <input type="password" id="password" name="password" class="box" autocomplete="off"><br><br>
+                <input type="submit" name="submit" value="Login" class="button" id="loginBTN">
+            </form>
+
+            <!--Error message placeholder-->
+            <p id="errorMessage" style="color: red;"></p>
+            
+        </div>
+    </div>
+
+    <script src="../src/login.js"></script>
+</body>
+</html>

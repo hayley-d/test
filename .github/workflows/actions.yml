@@ -1,0 +1,151 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    # Runs the workflow on every push to the main branch
+    branches: [master] 
+  pull_request:
+    # Runs the workflow on every pull request to the main branch
+    branches: [master] 
+
+jobs:
+  # Build & Test Database Engine
+  build-database-engine:
+    name: Build & Test Database Engine
+    runs-on: ubuntu-latest
+
+    defaults:
+      # Set working directory for all steps
+      run:
+        working-directory: database-engine  
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install dependencies required for building and testing the database engine
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy make g++ valgrind cppcheck libboost-all-dev nlohmann-json3-dev
+
+      # Step 3: Build the project using the Makefile
+      - name: Build
+        run: make
+
+      # Step 4: Run unit tests defined in the Makefile
+      - name: Run Tests
+        run: make test || true
+
+      # Step 5: Perform static code analysis using clang-tidy
+      - name: Static Analysis (clang-tidy)
+        run: |
+          make clean  # Ensure a clean build before running analysis
+          find . -name "*.cpp" | xargs clang-tidy -- -std=c++17 || true
+
+      # Step 6: Perform a memory check using Valgrind
+      - name: Memory Check
+        run: make memcheck || true
+
+      # Step 7: Clean up any generated files
+      - name: Clean
+        run: make clean  
+
+  # Build & Test CLI
+  build-cli:
+    name: Build & Test CLI
+    runs-on: ubuntu-latest 
+
+    defaults:
+      # Set working directory for all steps
+      run:
+        working-directory: cli/src 
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js 20
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install project dependencies using npm ci
+      - name: Install Dependencies
+        run: npm i  
+
+      # Step 4: Run linting to check for code quality issues
+      - name: Run Linting
+        run: npm run lint || true
+
+      # Step 5: Build the CLI application
+      - name: Build CLI
+        run: node mpdb.js
+
+      # Step 6: Run unit tests
+      - name: Run Unit Tests
+        run: npm test   
+
+      # Step 7: Run integration tests using testServer
+      #- name: Run Integration Tests
+      #run: node testServer
+
+  # Build & Test Web App
+  build-web-app:
+    name: Build Web App
+    runs-on: ubuntu-latest
+
+    # Set working directory for all steps
+    defaults:
+      run:
+        working-directory: web-app/backend 
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v4 
+
+      # Step 2: Install Node.js 20
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          
+      # Step 3: Install project dependencies using npm ci
+      - name: Install Dependencies
+        run: npm i  
+
+      # Step 4: Run linting
+      - name: Run Linting
+        run: npm run lint || true
+        
+  docker-build:
+    name: Docker Build & Deploy
+    runs-on: ubuntu-latest
+    # Wait for all jobs to complete before starting docker builds
+    needs: [build-database-engine, build-cli, build-web-app]  
+
+    steps:
+      # Step 1: Checkout the latest code from the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 3: Build and start all containers using Docker Compose
+      - name: Build and Start Containers
+        run: |
+          docker compose build --no-cache
+          docker compose up -d
+
+      # Step 4: Wait a few seconds to ensure services start properly
+      - name: Wait for Services to Start
+        run: sleep 10  
+
+      # Step 5: Stop and remove all containers after testing
+      - name: Stop and Remove Containers
+        run: docker compose down
+

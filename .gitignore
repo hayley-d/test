@@ -1,0 +1,35 @@
+# Dependencies
+**/node_modules/
+**/dist/
+**/.angular/
+**/.cache/
+**/coverage/
+**/npm-debug.log*
+
+# Environment variables and secrets
+#.env
+#.env.local
+#.env.*.local
+
+#Test files
+test.js
+input.html
+TestEndpoints.txt
+
+# Compiled Object files
+**/build/
+**/bin/
+**/obj/
+**/out/
+**/cmake_install.cmake
+**/*.o
+**/*.lib
+**/*.exe
+
+# IDE 
+.vscode/
+.idea/
+*.iml
+
+#Node-server folder
+node-server/
