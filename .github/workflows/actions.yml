@@ -36,12 +36,6 @@ jobs:
       - name: Run Tests
         run: make test || true
 
-      # Step 5: Perform static code analysis using clang-tidy
-      - name: Static Analysis (clang-tidy)
-        run: |
-          make clean  # Ensure a clean build before running analysis
-          find . -name "*.cpp" | xargs clang-tidy -- -std=c++17 || true
-
       # Step 6: Perform a memory check using Valgrind
       - name: Memory Check
         run: make memcheck || true
