@@ -24,4 +24,4 @@ RUN make
 EXPOSE 9005 
 
 # Command to run the compiled database engine
-CMD ["./main"]
+CMD ["./build/main"]
