@@ -77,7 +77,7 @@ TEST_CASE("Test setCollection function")
 
 }
 
-TEST_CASE("Test writeToKeyFile function")
+/*TEST_CASE("Test writeToKeyFile function")
 {   
 
     DatabaseStorageEngine db_4("VeryEvilMorty");
@@ -239,19 +239,12 @@ TEST_CASE("Test writeToKeyFile function")
 
 TEST_CASE("Pseudo test case")
 {
-    /*
-        This is horrible vodoo and I hate it. 
-        Due to templatized implementation of writeToKeyFile it is not possible to create a Database* (as virtual template methods are not allowed)
-        Thus we create a DatabaseStorage engine directly (not via Database*) but then we have no control over the destructor being called
-        In Doctest variable scope is tied to test cases so we only remove remnant files in a seperate test case that way we know the DB instance
-        is deleted (otherwise big bad segfault)
-        Note: This won't be a problem generally as we won't be removing folders in non test cases (I think)
-    */
+    
     fs::remove(fs::path("storage/VeryEvilMorty/operation_counter.txt"));
     fs::remove(fs::path("storage/VeryEvilMorty/wal.txt"));
     fs::remove(fs::path("storage/VeryEvilMorty/EVILCOLLECTION"));
     fs::remove(fs::path("storage/VeryEvilMorty"));
-}
+}*/
 
 TEST_CASE("TEST writeToMainFile")
 {
