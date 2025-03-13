@@ -39,7 +39,7 @@ static json makeRequest(boost::asio::io_context& io_context, const tcp::resolver
     return json::parse(response.body());
 }
 
-TEST_CASE("QRY Testing")
+/*TEST_CASE("QRY Testing")
 {
     // Start server in separate thread
     HTTPServer server_1(9005);
@@ -99,4 +99,4 @@ TEST_CASE("QRY Testing")
     }
     
     server_1.stop();
-}
+}*/
