@@ -132,7 +132,7 @@ jobs:
       # Step 3: Build and start all containers using Docker Compose
       - name: Build and Start Containers
         run: |
-          docker compose build --no-cache
+          docker compose build
           docker compose up -d
 
       # Step 4: Wait a few seconds to ensure services start properly
